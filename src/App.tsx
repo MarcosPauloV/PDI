@@ -1,5 +1,5 @@
 import { ChangeEvent, useState, useEffect, useRef } from "react";
-import Negativo from "./services/filtros/negativo";
+import Negativo from "./services/filtros/compressao";
 
 const list = [
   "Logaritmo",
@@ -137,6 +137,9 @@ function App() {
             <canvas ref={canvasRef} className="mt-4 border"></canvas>
           </div>
         </section>
+        
+     
+       
       </main>
 
       <footer className="flex flex-col items-center justify-center w-screen h-20 text-base shadow-inner text-slate-200 bg-slate-900">
