@@ -1,0 +1,29 @@
+Padding - Completar as bordas da matriz com 0
+
+Luciano:
+
+Função Ponta de Prova (NC e coordenada do pixel apontado)
+Filtros de Logaritmo e Logaritmo Inverso
+Ampliação com interpolação por replicação (Nearest Neighbor)
+Filtro da Média
+Operadores High Boost
+
+
+Gabriel:
+
+Ampliação com interpolação bilinear
+Rotação 90º (horário e anti-horário) e Rotação 180º
+Espelhamento Horizontal e Vertical
+Filtro de Expansão e Compressão
+Operadores Prewitt e Sobel
+
+
+Marcos:
+
+Filtros de Potência e Raiz (correção de gamma)
+Filtros da Mediana, Moda, MIN e MAX
+Histograma gráfico da imagem
+Equalização da imagem e histograma gráfico resultante;
+Somar duas imagens oferecendo a opção de porcentagem;
+Filtro Negativo;
+Laplaciano;
