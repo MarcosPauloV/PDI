@@ -1,1 +1,1 @@
-export default function Equalizacao() {}
+export default function Equalizacao() {} 
