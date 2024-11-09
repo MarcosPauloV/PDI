@@ -1,6 +1,6 @@
 import { ChangeEvent, useState, useEffect, useRef } from "react";
 
-import Negativo from "./services/filtros/compressao";
+import Negativo from "./services/filtros/logaritmoInverso";
 
 const list = [
   "Logaritmo",
