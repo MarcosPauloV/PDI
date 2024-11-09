@@ -1,5 +1,5 @@
 import { ChangeEvent, useState, useEffect, useRef } from "react";
-import Negativo from "./services/filtros/negativo";
+import Negativo from "./services/filtros/espelhamentoH";
 
 const list = [
   "Logaritmo",
