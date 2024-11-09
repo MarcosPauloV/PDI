@@ -11,11 +11,11 @@ Operadores High Boost
 
 Gabriel:
 
-Ampliação com interpolação bilinear ok
-Rotação 90º (horário e anti-horário) e Rotação 180º ok
-Espelhamento Horizontal e Vertical ok
-Filtro de Expansão e Compressão ok
-Operadores Prewitt e Sobel
+Ampliação com interpolação bilinear - Feito
+Rotação 90º (horário e anti-horário) e Rotação 180º - Feito
+Espelhamento Horizontal e Vertical - Feito
+Filtro de Expansão e Compressão - Feito
+Operadores Prewitt e Sobel - Feito 
 
 
 Marcos:
