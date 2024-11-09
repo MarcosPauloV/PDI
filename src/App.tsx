@@ -1,4 +1,5 @@
 import { ChangeEvent, useState, useEffect, useRef } from "react";
+
 import Negativo from "./services/filtros/compressao";
 
 const list = [
