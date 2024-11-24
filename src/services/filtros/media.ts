@@ -10,7 +10,7 @@ export default function Media(matrix: number[][], filterSize: number = 3): numbe
     for (let j = 0; j < numCols; j++) {
       let sum = 0;
       let count = 0;
-
+ 
       // Aplica o filtro da média na vizinhança com padding zero
       for (let m = -pad; m <= pad; m++) {
         for (let n = -pad; n <= pad; n++) {

@@ -32,4 +32,3 @@ export default function Logaritmo(matrix: number[][], filterSize: number = 3): n
 
   return result;
 }
- 
