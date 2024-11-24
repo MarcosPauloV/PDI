@@ -2,8 +2,8 @@ Padding - Completar as bordas da matriz com 0
 
 Luciano:
 
-Função Ponta de Prova (NC e coordenada do pixel apontado)
-Filtros de Logaritmo e Logaritmo Inverso
+Logaritmo Inverso
+Filtros de Logaritmo
 Ampliação com interpolação por replicação (Nearest Neighbor)
 Filtro da Média
 Operadores High Boost
@@ -27,3 +27,4 @@ Equalização da imagem e histograma gráfico resultante;
 Somar duas imagens oferecendo a opção de porcentagem;
 Filtro Negativo;
 Laplaciano;
+Função Ponta de Prova (NC e coordenada do pixel apontado)

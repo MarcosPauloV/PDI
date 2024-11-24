@@ -1,6 +1,10 @@
 import { ChangeEvent, useState, useEffect, useRef } from "react";
 
+<<<<<<< Updated upstream
 import Negativo from "./services/filtros/compressao";
+=======
+import Negativo from "./services/filtros/media";
+>>>>>>> Stashed changes
 
 const list = [
   "Logaritmo",
