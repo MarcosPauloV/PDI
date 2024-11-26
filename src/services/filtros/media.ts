@@ -1,41 +1,34 @@
-export default function Media(image: number[][]): number[][] {
-  try {
-    const rows = image.length;
-    const cols = image[0].length;
-    const kernel = [
-      [1/9, 1/9, 1/9],
-      [1/9, 1/9, 1/9],
-      [1/9, 1/9, 1/9]
-    ];
+export default function Media(matrix: number[][], filterSize: number = 3): number[][] {
+  const numRows = matrix.length;
+  const numCols = matrix[0].length;
+  const pad = Math.floor(filterSize / 2);
 
-    // Criar matriz de saída
-    const result = Array.from({ length: rows }, () => Array(cols).fill(0));
+  // Cria uma nova matriz preenchida com zeros para armazenar o resultado
+  const result: number[][] = Array.from({ length: numRows }, () => Array(numCols).fill(0));
 
-    // Aplicar convolução
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
-        let sum = 0;
+  for (let i = 0; i < numRows; i++) {
+    for (let j = 0; j < numCols; j++) {
+      let sum = 0;
+      let count = 0;
+ 
+      // Aplica o filtro da média na vizinhança com padding zero
+      for (let m = -pad; m <= pad; m++) {
+        for (let n = -pad; n <= pad; n++) {
+          const row = i + m;
+          const col = j + n;
 
-        // Aplicar kernel 3x3
-        for (let ki = -1; ki <= 1; ki++) {
-          for (let kj = -1; kj <= 1; kj++) {
-            const ni = i + ki;
-            const nj = j + kj;
-
-            // Verificar bordas
-            if (ni >= 0 && ni < rows && nj >= 0 && nj < cols) {
-              sum += image[ni][nj] * kernel[ki + 1][kj + 1];
-            }
+          // Verifica se o índice está dentro dos limites; caso contrário, aplica padding zero
+          if (row >= 0 && row < numRows && col >= 0 && col < numCols) {
+            sum += matrix[row][col];
+            count++;
           }
         }
-
-        result[i][j] = Math.round(sum);
       }
-    }
 
-    return result;
-  } catch (error) {
-    console.error('Erro no filtro de média:', error);
-    return [];
+      // Calcula a média e atribui ao elemento na matriz resultante
+      result[i][j] = count > 0 ? sum / count : 0;
+    }
   }
+
+  return result;
 }
