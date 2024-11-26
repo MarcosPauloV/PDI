@@ -1,5 +1,5 @@
-export default function Ampliacaorp512(matrix: number[][]): number[][] {
-  if (matrix.length !== 256 || matrix.some(row => row.length !== 256)) {
+export default function InterpolacaoRepli512(matrix: number[][]): number[][] {
+  if (matrix.length !== 256 || matrix.some((row) => row.length !== 256)) {
     throw new Error("A matriz de entrada deve ser 256x256.");
   }
 

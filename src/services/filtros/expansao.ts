@@ -1,6 +1,8 @@
-export default function expansao(matrix: number[][]): number[][] {
+export default function Expansao(matrix: number[][]): number[][] {
   const n = matrix.length;
-  const filteredMatrix: number[][] = Array.from({ length: n }, () => Array(n).fill(0));
+  const filteredMatrix: number[][] = Array.from({ length: n }, () =>
+    Array(n).fill(0)
+  );
   const a = 2;
   const b = 1;
 
@@ -12,4 +14,3 @@ export default function expansao(matrix: number[][]): number[][] {
 
   return filteredMatrix;
 }
-

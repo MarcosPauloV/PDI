@@ -20,7 +20,8 @@ Operadores Prewitt e Sobel
 
 Marcos:
 
-Filtros de Potência e Raiz (correção de gamma)
+Filtros de Potência (correção de gamma) - Feito
+Filtros Raiz (correção de gamma) 
 Filtros da Mediana, Moda, MIN e MAX
 Histograma gráfico da imagem
 Equalização da imagem e histograma gráfico resultante;
