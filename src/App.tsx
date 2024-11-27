@@ -28,11 +28,6 @@ import Rotacao180 from "./services/filtros/rotacao180";
 import Sobel from "./services/filtros/sobel";
 import Soma from "./services/filtros/soma";
 
-
-
-
-
-
 const list = [
   "Logaritmo",
   "Logaritmo Inverso",
@@ -103,10 +98,102 @@ function App() {
   };
 
   const handleFilter = (filterName: string) => {
-    console.log(`Filtro aplicado: ${filterName}`);
-    if (filterName === "Soma de duas imagens") {
-      setIsDualImageMode(true);
+    if (!grayMatrix) {
+      console.error('Nenhuma imagem carregada');
+      return;
     }
+
+    let resultMatrix: number[][] | null = null;
+
+    switch (filterName) {
+      case 'Logaritmo':
+        resultMatrix = Logaritmo(grayMatrix);
+        break;
+      case 'Logaritmo Inverso':
+        resultMatrix = LogaritmoInverso(grayMatrix);
+        break;
+      case 'Ampliação Replicação':
+        resultMatrix = InterpolacaoRepli512(grayMatrix);
+        break;
+      case 'Média':
+        resultMatrix = Media(grayMatrix);
+        break;
+      case 'Laplaciano':
+        resultMatrix = Laplaciano(grayMatrix);
+        break;
+      case 'High-boost':
+        resultMatrix = HighBoost(grayMatrix);
+        break;
+      case 'Ampliação bilinear':
+        resultMatrix = AmpliacaoBilinear512(grayMatrix);
+        break;
+      case 'Rotação 90h':
+        resultMatrix = Rotacao90Horario(grayMatrix);
+        break;
+      case 'Rotação 90ah':
+        resultMatrix = Rotacao90Antihorario(grayMatrix);
+        break;
+      case 'Rotação 180':
+        resultMatrix = Rotacao180(grayMatrix);
+        break;
+      case 'Expansão':
+        resultMatrix = Expansao(grayMatrix);
+        break;
+      case 'Compressão':
+        resultMatrix = Compressao(grayMatrix);
+        break;
+      case 'Prewitt':
+        resultMatrix = Prewitt(grayMatrix);
+        break;
+      case 'Sobel':
+        resultMatrix = Sobel(grayMatrix);
+        break;
+      case 'Potência':
+        resultMatrix = Potencia(grayMatrix);
+        break;
+      case 'Raiz Quadrada':
+        resultMatrix = Raiz(grayMatrix);
+        break;
+      case 'Equalização':
+        resultMatrix = Equalizacao(grayMatrix);
+        break;
+      case 'Negativo':
+        resultMatrix = Negativo(grayMatrix);
+        break;
+      case 'Soma de duas imagens':
+        setIsDualImageMode(true);
+        return;
+      default:
+        console.error('Filtro não implementado:', filterName);
+        return;
+    }
+
+    if (resultMatrix) {
+      updateCanvas(resultMatrix);
+    }
+  };
+
+  const updateCanvas = (matrix: number[][]) => {
+    const canvas = canvasRef1.current;
+    if (!canvas) return;
+    const context = canvas.getContext('2d');
+    if (!context) return;
+
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < matrix[0].length; j++) {
+        const pixelIndex = (i * canvas.width + j) * 4;
+        const pixelValue = Math.min(255, Math.max(0, Math.round(matrix[i][j])));
+        data[pixelIndex] = pixelValue;     // Red
+        data[pixelIndex + 1] = pixelValue; // Green
+        data[pixelIndex + 2] = pixelValue; // Blue
+        // Alpha permanece inalterado
+      }
+    }
+
+    context.putImageData(imageData, 0, 0);
   };
 
   useEffect(() => {
@@ -116,7 +203,7 @@ function App() {
       img.onload = () => {
         const canvas = canvasRef1.current;
         if (!canvas) return;
-        const context = canvas.getContext("2d");
+        const context = canvas.getContext('2d');
         if (!context) return;
 
         canvas.width = img.width;
@@ -127,19 +214,33 @@ function App() {
         const imageData = context.getImageData(0, 0, img.width, img.height);
         const data = imageData.data;
 
-        for (let i = 0; i < data.length; i += 4) {
-          const red = data[i];
-          const green = data[i + 1];
-          const blue = data[i + 2];
-          // Fórmula para conversão em tons de cinza
-          const gray = 0.299 * red + 0.587 * green + 0.114 * blue;
-          data[i] = gray;     // Red
-          data[i + 1] = gray; // Green
-          data[i + 2] = gray; // Blue
-          // Alpha permanece inalterado
+        // Criando a matriz de pixels em tons de cinza
+        const grayMatrixTemp: number[][] = Array.from(
+          { length: img.height },
+          () => Array(img.width).fill(0)
+        );
+
+        for (let i = 0; i < img.height; i++) {
+          for (let j = 0; j < img.width; j++) {
+            const pixelIndex = (i * img.width + j) * 4;
+            const red = data[pixelIndex];
+            const green = data[pixelIndex + 1];
+            const blue = data[pixelIndex + 2];
+            // Fórmula para conversão em tons de cinza
+            const gray = 0.299 * red + 0.587 * green + 0.114 * blue;
+            grayMatrixTemp[i][j] = gray;
+            
+            // Atualiza os valores no imageData
+            data[pixelIndex] = gray;     // Red
+            data[pixelIndex + 1] = gray; // Green
+            data[pixelIndex + 2] = gray; // Blue
+            // Alpha permanece inalterado
+          }
         }
 
+        // Atualiza o canvas e salva a matriz
         context.putImageData(imageData, 0, 0);
+        setGrayMatrix(grayMatrixTemp);
         setImageResolution({ width: img.width, height: img.height });
       };
     }
