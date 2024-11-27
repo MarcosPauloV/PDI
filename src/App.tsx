@@ -1,5 +1,36 @@
 import { ChangeEvent, useState, useEffect, useRef } from "react";
+import AmpliacaoBilinear512 from "./services/filtros/ampliaçaoIB512";
+import AmpliacaoBilinear1024 from "./services/filtros/ampliaçaoIB1024";
+import Compressao from "./services/filtros/compressao";
+import Equalizacao from "./services/filtros/equalizacao";
+import EspelhamentoHorizontal from "./services/filtros/espelhamentoH";
+import EspelhamentoVertical from "./services/filtros/espelhamentoV";
+import Expansao from "./services/filtros/expansao";
+import HighBoost from "./services/filtros/highboost";
+import Histogramagrafimg from "./services/filtros/histograma";
+import InterpolacaoRepli512 from "./services/filtros/interpolacaoreplicacao512";
+import Ampliacaointrp1024 from "./services/filtros/interpolacaoreplicacao1024";
+import Laplaciano from "./services/filtros/laplaciano";
+import Logaritmo from "./services/filtros/logaritmo";
+import LogaritmoInverso from "./services/filtros/logaritmoInverso";
+import Maximo from "./services/filtros/max";
+import Media from "./services/filtros/media";
+import Mediana from "./services/filtros/mediana";
+import Minimo from "./services/filtros/min";
+import Moda from "./services/filtros/moda";
 import Negativo from "./services/filtros/compressao";
+import Potencia from "./services/filtros/potencia";
+import Prewitt from "./services/filtros/prewitt";
+import Raiz from "./services/filtros/raiz";
+import Rotacao90Antihorario from "./services/filtros/rotacao90ah";
+import Rotacao90Horario from "./services/filtros/rotacao90h";
+import Rotacao180 from "./services/filtros/rotacao180";
+import Sobel from "./services/filtros/sobel";
+import Soma from "./services/filtros/soma";
+
+
+
+
 
 const list = [
   "Logaritmo",

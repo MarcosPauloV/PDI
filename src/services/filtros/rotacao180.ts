@@ -1,4 +1,4 @@
-export default function Rotacao90Antihorario(matrix: number[][]): number[][] {
+export default function Rotacao180(matrix: number[][]): number[][] {
   const n = matrix.length;
   const rotatedMatrix: number[][] = Array.from({ length: n }, () => Array(n).fill(0));
 

@@ -48,7 +48,7 @@ export default function Sobel(image: number[][]): number[][] {
 
     return result;
   } catch (error) {
-    console.error('Erro no filtro Sobel:', error);
+    console.error("Erro no filtro Sobel:", error);
     return [];
   }
 }

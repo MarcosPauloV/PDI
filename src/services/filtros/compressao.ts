@@ -1,4 +1,4 @@
-export default function compressao(matrix: number[][]): number[][] {
+export default function Compressao(matrix: number[][]): number[][] {
   const n = matrix.length;
   const filteredMatrix: number[][] = Array.from({ length: n }, () => Array(n).fill(0));
   const a = 2;
