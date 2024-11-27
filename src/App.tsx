@@ -32,6 +32,7 @@ import Soma from "./services/filtros/soma";
 
 
 
+
 const list = [
   "Logaritmo",
   "Logaritmo Inverso",
@@ -180,15 +181,15 @@ function App() {
   }, [secondImage]);
 
   return (
-    <div className="flex flex-col min-h-screen overflow-x-hidden">
-      <header className="flex items-center justify-center w-full h-16 text-xl font-bold shadow-lg text-slate-100 bg-gradient-to-r from-slate-800 to-slate-900">
-        <h1 className="flex items-center gap-2">
+    <div className="flex overflow-x-hidden flex-col min-h-screen">
+      <header className="flex justify-center items-center w-full h-16 text-xl font-bold bg-gradient-to-r shadow-lg text-slate-100 from-slate-800 to-slate-900">
+        <h1 className="flex gap-2 items-center">
           Processamento Digital de Imagens
         </h1>
       </header>
 
       <main className="flex flex-col flex-1 md:flex-row bg-slate-100">
-        <aside className="w-full p-4 bg-white shadow-lg md:w-72">
+        <aside className="p-4 w-full bg-white shadow-lg md:w-72">
           <div className="sticky top-4">
             <h2 className="mb-4 text-lg font-semibold text-slate-700">Filtros Disponíveis</h2>
             <div className="grid grid-cols-2 md:grid-cols-1 gap-2 max-h-[calc(100vh-12rem)] overflow-y-auto pr-2">
@@ -196,7 +197,7 @@ function App() {
                 <button
                   key={item}
                   onClick={() => handleFilter(item)}
-                  className="px-3 py-2 text-sm text-left transition-all duration-200 rounded-lg text-slate-700 hover:bg-slate-100 hover:shadow-md active:scale-95 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                  className="px-3 py-2 text-sm text-left rounded-lg transition-all duration-200 text-slate-700 hover:bg-slate-100 hover:shadow-md active:scale-95 focus:outline-none focus:ring-2 focus:ring-slate-400"
                 >
                   {item}
                 </button>
@@ -205,8 +206,8 @@ function App() {
           </div>
         </aside>
 
-        <section className="flex-1 p-4 overflow-y-auto">
-          <div className="max-w-6xl mx-auto space-y-4">
+        <section className="overflow-y-auto flex-1 p-4">
+          <div className="mx-auto space-y-4 max-w-6xl">
             <div className="p-4 bg-white rounded-lg shadow-lg">
               <h2 className="mb-4 text-lg font-semibold text-slate-700">Upload de Imagens</h2>
               <div className="space-y-4">
@@ -243,12 +244,12 @@ function App() {
                   <div className="relative w-full" style={{ paddingTop: "100%" }}>
                     <canvas
                       ref={canvasRef1}
-                      className="absolute inset-0 object-contain w-full h-full border rounded-lg border-slate-200"
+                      className="object-contain absolute inset-0 w-full h-full rounded-lg border border-slate-200"
                     ></canvas>
                   </div>
                   {imageResolution && (
                     <div className="mt-4 space-y-3">
-                      <div className="flex items-center justify-between text-sm text-slate-600">
+                      <div className="flex justify-between items-center text-sm text-slate-600">
                         <span>Resolução:</span>
                         <span className="font-medium">{imageResolution.width} x {imageResolution.height}</span>
                       </div>
@@ -257,7 +258,7 @@ function App() {
                           <label htmlFor="percent1" className="block text-sm font-medium text-slate-700">
                             Porcentagem de Mistura
                           </label>
-                          <div className="flex items-center gap-2">
+                          <div className="flex gap-2 items-center">
                             <input
                               id="percent1"
                               type="range"
@@ -271,7 +272,7 @@ function App() {
                               type="number"
                               value={percentages.img1}
                               onChange={(e) => handlePercentageChange(e, "img1")}
-                              className="w-16 px-2 py-1 text-center border rounded-md"
+                              className="px-2 py-1 w-16 text-center rounded-md border"
                             />
                             <span className="text-slate-600">%</span>
                           </div>
@@ -288,12 +289,12 @@ function App() {
                   <div className="relative w-full" style={{ paddingTop: "100%" }}>
                     <canvas
                       ref={canvasRef2}
-                      className="absolute inset-0 object-contain w-full h-full border rounded-lg border-slate-200"
+                      className="object-contain absolute inset-0 w-full h-full rounded-lg border border-slate-200"
                     ></canvas>
                   </div>
                   {imageResolution && (
                     <div className="mt-4 space-y-3">
-                      <div className="flex items-center justify-between text-sm text-slate-600">
+                      <div className="flex justify-between items-center text-sm text-slate-600">
                         <span>Resolução:</span>
                         <span className="font-medium">{imageResolution.width} x {imageResolution.height}</span>
                       </div>
@@ -302,7 +303,7 @@ function App() {
                           <label htmlFor="percent2" className="block text-sm font-medium text-slate-700">
                             Porcentagem de Mistura
                           </label>
-                          <div className="flex items-center gap-2">
+                          <div className="flex gap-2 items-center">
                             <input
                               id="percent2"
                               type="range"
@@ -316,7 +317,7 @@ function App() {
                               type="number"
                               value={percentages.img2}
                               onChange={(e) => handlePercentageChange(e, "img2")}
-                              className="w-16 px-2 py-1 text-center border rounded-md"
+                              className="px-2 py-1 w-16 text-center rounded-md border"
                             />
                             <span className="text-slate-600">%</span>
                           </div>
@@ -331,7 +332,7 @@ function App() {
         </section>
       </main>
 
-      <footer className="flex flex-col items-center justify-center w-full h-16 text-base bg-gradient-to-r from-slate-800 to-slate-900 text-slate-300">
+      <footer className="flex flex-col justify-center items-center w-full h-16 text-base bg-gradient-to-r from-slate-800 to-slate-900 text-slate-300">
         <div>&copy; 2024 - Processamento Digital de Imagens</div>
         <div className="text-sm text-slate-400">Desenvolvido por Marcos Paulo, Luciano, Gabriel</div>
       </footer>
