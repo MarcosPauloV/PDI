@@ -3,17 +3,20 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartOptions
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend
@@ -22,17 +25,17 @@ ChartJS.register(
 interface HistogramProps {
   imageData: number[][];
   onClose: () => void;
-  title?: string;
+  title: string;
 }
 
-const Histogram: React.FC<HistogramProps> = ({ imageData, onClose, title = 'Histograma da Imagem' }) => {
+const Histogram: React.FC<HistogramProps> = ({ imageData, onClose, title }) => {
   // Calcular o histograma
-  const calculateHistogram = () => {
+  const calculateHistogram = (matrix: number[][]): number[] => {
     const histogram = new Array(256).fill(0);
     
-    for (let i = 0; i < imageData.length; i++) {
-      for (let j = 0; j < imageData[i].length; j++) {
-        const pixelValue = Math.round(imageData[i][j]);
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < matrix[i].length; j++) {
+        const pixelValue = Math.round(matrix[i][j]);
         if (pixelValue >= 0 && pixelValue <= 255) {
           histogram[pixelValue]++;
         }
@@ -42,7 +45,7 @@ const Histogram: React.FC<HistogramProps> = ({ imageData, onClose, title = 'Hist
     return histogram;
   };
 
-  const histogram = calculateHistogram();
+  const histogram = calculateHistogram(imageData);
 
   const data = {
     labels: Array.from({ length: 256 }, (_, i) => i.toString()),
@@ -50,14 +53,14 @@ const Histogram: React.FC<HistogramProps> = ({ imageData, onClose, title = 'Hist
       {
         label: 'Frequência',
         data: histogram,
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
       },
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     plugins: {
       legend: {
@@ -79,7 +82,7 @@ const Histogram: React.FC<HistogramProps> = ({ imageData, onClose, title = 'Hist
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-4xl">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Histograma</h2>
+          <h2 className="text-xl font-bold">{title}</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-full"
@@ -88,7 +91,7 @@ const Histogram: React.FC<HistogramProps> = ({ imageData, onClose, title = 'Hist
           </button>
         </div>
         <div className="bg-white p-4 rounded-lg">
-          <Bar data={data} options={options} />
+          <Line options={options} data={data} />
         </div>
       </div>
     </div>
