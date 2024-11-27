@@ -48,15 +48,24 @@ const list = [
   "Equalização",
   "Soma de duas imagens",
   "Negativo",
+  "Mediana",
+  "Máximo",
+  "Mínimo",
+  "Moda",
+  "Espelhamento Horizontal",
+  "Espelhamento Vertical",
+  "Histograma",
 ];
 
 function App() {
   const [image, setImage] = useState<string | null>(null);
   const [secondImage, setSecondImage] = useState<string | null>(null);
   const [grayMatrix, setGrayMatrix] = useState<number[][] | null>(null);
+  const [secondGrayMatrix, setSecondGrayMatrix] = useState<number[][] | null>(null);
   const [imageResolution, setImageResolution] = useState<{ width: number; height: number } | null>(null);
   const [isDualImageMode, setIsDualImageMode] = useState(false);
   const [percentages, setPercentages] = useState<{ img1: number; img2: number }>({ img1: 50, img2: 50 });
+  const [filterSize, setFilterSize] = useState<number>(3);
 
   const canvasRef1 = useRef<HTMLCanvasElement>(null);
   const canvasRef2 = useRef<HTMLCanvasElement>(null);
@@ -159,6 +168,24 @@ function App() {
         break;
       case 'Negativo':
         resultMatrix = Negativo(grayMatrix);
+        break;
+      case 'Mediana':
+        resultMatrix = Mediana(grayMatrix, filterSize);
+        break;
+      case 'Máximo':
+        resultMatrix = Maximo(grayMatrix, filterSize);
+        break;
+      case 'Mínimo':
+        resultMatrix = Minimo(grayMatrix, filterSize);
+        break;
+      case 'Moda':
+        resultMatrix = Moda(grayMatrix, filterSize);
+        break;
+      case 'Espelhamento Horizontal':
+        resultMatrix = EspelhamentoHorizontal(grayMatrix);
+        break;
+      case 'Espelhamento Vertical':
+        resultMatrix = EspelhamentoVertical(grayMatrix);
         break;
       case 'Soma de duas imagens':
         setIsDualImageMode(true);
@@ -264,22 +291,48 @@ function App() {
         const imageData = context.getImageData(0, 0, img.width, img.height);
         const data = imageData.data;
 
-        for (let i = 0; i < data.length; i += 4) {
-          const red = data[i];
-          const green = data[i + 1];
-          const blue = data[i + 2];
-          // Fórmula para conversão em tons de cinza
-          const gray = 0.299 * red + 0.587 * green + 0.114 * blue;
-          data[i] = gray;     // Red
-          data[i + 1] = gray; // Green
-          data[i + 2] = gray; // Blue
-          // Alpha permanece inalterado
+        // Criando a matriz de pixels em tons de cinza
+        const grayMatrixTemp: number[][] = Array.from(
+          { length: img.height },
+          () => Array(img.width).fill(0)
+        );
+
+        for (let i = 0; i < img.height; i++) {
+          for (let j = 0; j < img.width; j++) {
+            const pixelIndex = (i * img.width + j) * 4;
+            const red = data[pixelIndex];
+            const green = data[pixelIndex + 1];
+            const blue = data[pixelIndex + 2];
+            // Fórmula para conversão em tons de cinza
+            const gray = 0.299 * red + 0.587 * green + 0.114 * blue;
+            grayMatrixTemp[i][j] = gray;
+            
+            // Atualiza os valores no imageData
+            data[pixelIndex] = gray;     // Red
+            data[pixelIndex + 1] = gray; // Green
+            data[pixelIndex + 2] = gray; // Blue
+            // Alpha permanece inalterado
+          }
         }
 
+        // Atualiza o canvas e salva a matriz
         context.putImageData(imageData, 0, 0);
+        setSecondGrayMatrix(grayMatrixTemp);
       };
     }
   }, [secondImage]);
+
+  useEffect(() => {
+    if (isDualImageMode && grayMatrix && secondGrayMatrix && percentages.img1 !== undefined) {
+      const resultMatrix = Soma(
+        grayMatrix,
+        secondGrayMatrix,
+        percentages.img1 / 100,
+        percentages.img2 / 100
+      );
+      updateCanvas(resultMatrix);
+    }
+  }, [isDualImageMode, grayMatrix, secondGrayMatrix, percentages]);
 
   return (
     <div className="flex overflow-x-hidden flex-col min-h-screen">
@@ -432,6 +485,42 @@ function App() {
           </div>
         </section>
       </main>
+
+      <div className="p-4 bg-white rounded-lg shadow-lg">
+        <h2 className="mb-4 text-lg font-semibold text-slate-700">Configurações do Filtro</h2>
+        <div className="space-y-4">
+          <div>
+            <label className="block mb-2 text-sm font-medium text-slate-700">
+              Tamanho do Filtro (pixels)
+            </label>
+            <div className="flex gap-2 items-center">
+              <input
+                type="range"
+                min="3"
+                max="9"
+                step="2"
+                value={filterSize}
+                onChange={(e) => setFilterSize(Number(e.target.value))}
+                className="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-slate-200"
+              />
+              <input
+                type="number"
+                min="3"
+                max="9"
+                step="2"
+                value={filterSize}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  if (value >= 3 && value <= 9 && value % 2 === 1) {
+                    setFilterSize(value);
+                  }
+                }}
+                className="w-16 px-2 py-1 text-center border rounded"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
       <footer className="flex flex-col justify-center items-center w-full h-16 text-base bg-gradient-to-r from-slate-800 to-slate-900 text-slate-300">
         <div>&copy; 2024 - Processamento Digital de Imagens</div>
