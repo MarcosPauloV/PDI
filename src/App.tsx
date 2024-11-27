@@ -221,6 +221,10 @@ function App() {
     );
 
     updateCanvas(resultMatrix);
+    setGrayMatrix(resultMatrix);
+    setIsDualImageMode(false);
+    setSecondImage(null);
+    setSecondGrayMatrix(null);
   };
 
   const updateCanvas = (matrix: number[][]) => {
@@ -464,34 +468,6 @@ function App() {
                               className="w-16 px-2 py-1 text-center border rounded"
                             />
                           </div>
-                          <label htmlFor="percent2" className="block text-sm font-medium text-slate-700">
-                            Porcentagem Imagem 2
-                          </label>
-                          <div className="flex gap-2 items-center">
-                            <input
-                              id="percent2"
-                              type="range"
-                              min="0"
-                              max="100"
-                              value={percentages.img2}
-                              onChange={(e) => handlePercentageChange(e, "img2")}
-                              className="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-slate-200"
-                            />
-                            <input
-                              type="number"
-                              min="0"
-                              max="100"
-                              value={percentages.img2}
-                              onChange={(e) => handlePercentageChange(e, "img2")}
-                              className="w-16 px-2 py-1 text-center border rounded"
-                            />
-                          </div>
-                          <button
-                            onClick={handleApplySoma}
-                            className="w-full mt-4 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                          >
-                            Aplicar Soma
-                          </button>
                         </div>
                       )}
                     </div>
@@ -499,7 +475,7 @@ function App() {
                 </div>
               )}
 
-              {secondImage && (
+              {isDualImageMode && secondImage && (
                 <div className="p-4 bg-white rounded-lg shadow-lg">
                   <h3 className="mb-4 text-lg font-semibold text-slate-700">Segunda Imagem</h3>
                   <div className="relative w-full" style={{ paddingTop: "100%" }}>
@@ -508,62 +484,38 @@ function App() {
                       className="object-contain absolute inset-0 w-full h-full rounded-lg border border-slate-200"
                     ></canvas>
                   </div>
-                  {imageResolution && (
-                    <div className="mt-4 space-y-3">
-                      <div className="flex justify-between items-center text-sm text-slate-600">
-                        <span>Resolução:</span>
-                        <span className="font-medium">{imageResolution.width} x {imageResolution.height}</span>
+                  <div className="mt-4 space-y-3">
+                    <div className="space-y-2">
+                      <label htmlFor="percent2" className="block text-sm font-medium text-slate-700">
+                        Porcentagem Imagem 2
+                      </label>
+                      <div className="flex gap-2 items-center">
+                        <input
+                          id="percent2"
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={percentages.img2}
+                          onChange={(e) => handlePercentageChange(e, "img2")}
+                          className="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-slate-200"
+                        />
+                        <input
+                          type="number"
+                          min="0"
+                          max="100"
+                          value={percentages.img2}
+                          onChange={(e) => handlePercentageChange(e, "img2")}
+                          className="w-16 px-2 py-1 text-center border rounded"
+                        />
                       </div>
-                      {isDualImageMode && (
-                        <div className="space-y-2">
-                          <label htmlFor="percent1" className="block text-sm font-medium text-slate-700">
-                            Porcentagem Imagem 1
-                          </label>
-                          <div className="flex gap-2 items-center">
-                            <input
-                              id="percent1"
-                              type="range"
-                              min="0"
-                              max="100"
-                              value={percentages.img1}
-                              onChange={(e) => handlePercentageChange(e, "img1")}
-                              className="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-slate-200"
-                            />
-                            <input
-                              type="number"
-                              min="0"
-                              max="100"
-                              value={percentages.img1}
-                              onChange={(e) => handlePercentageChange(e, "img1")}
-                              className="w-16 px-2 py-1 text-center border rounded"
-                            />
-                          </div>
-                          <label htmlFor="percent2" className="block text-sm font-medium text-slate-700">
-                            Porcentagem Imagem 2
-                          </label>
-                          <div className="flex gap-2 items-center">
-                            <input
-                              id="percent2"
-                              type="range"
-                              min="0"
-                              max="100"
-                              value={percentages.img2}
-                              onChange={(e) => handlePercentageChange(e, "img2")}
-                              className="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-slate-200"
-                            />
-                            <input
-                              type="number"
-                              min="0"
-                              max="100"
-                              value={percentages.img2}
-                              onChange={(e) => handlePercentageChange(e, "img2")}
-                              className="w-16 px-2 py-1 text-center border rounded"
-                            />
-                          </div>
-                        </div>
-                      )}
+                      <button
+                        onClick={handleApplySoma}
+                        className="w-full mt-4 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      >
+                        Aplicar Soma
+                      </button>
                     </div>
-                  )}
+                  </div>
                 </div>
               )}
             </div>
