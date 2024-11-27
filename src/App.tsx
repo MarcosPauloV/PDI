@@ -96,14 +96,12 @@ function App() {
     }
   };
 
-  const handlePercentageChange = (e: ChangeEvent<HTMLInputElement>, key: "img1" | "img2") => {
-    const value = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
-    const otherKey = key === "img1" ? "img2" : "img1";
-    setPercentages({
-      ...percentages,
-      [key]: value,
-      [otherKey]: 100 - value,
-    });
+  const handlePercentageChange = (e: ChangeEvent<HTMLInputElement>, key: 'img1' | 'img2') => {
+    const value = Number(e.target.value);
+    setPercentages(prev => ({
+      ...prev,
+      [key]: value
+    }));
   };
 
   const handleFilter = (filterName: string) => {
@@ -410,7 +408,7 @@ function App() {
                       {isDualImageMode && (
                         <div className="space-y-2">
                           <label htmlFor="percent1" className="block text-sm font-medium text-slate-700">
-                            Porcentagem de Mistura
+                            Porcentagem Imagem 1
                           </label>
                           <div className="flex gap-2 items-center">
                             <input
@@ -424,11 +422,34 @@ function App() {
                             />
                             <input
                               type="number"
+                              min="0"
+                              max="100"
                               value={percentages.img1}
                               onChange={(e) => handlePercentageChange(e, "img1")}
-                              className="px-2 py-1 w-16 text-center rounded-md border"
+                              className="w-16 px-2 py-1 text-center border rounded"
                             />
-                            <span className="text-slate-600">%</span>
+                          </div>
+                          <label htmlFor="percent2" className="block text-sm font-medium text-slate-700">
+                            Porcentagem Imagem 2
+                          </label>
+                          <div className="flex gap-2 items-center">
+                            <input
+                              id="percent2"
+                              type="range"
+                              min="0"
+                              max="100"
+                              value={percentages.img2}
+                              onChange={(e) => handlePercentageChange(e, "img2")}
+                              className="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-slate-200"
+                            />
+                            <input
+                              type="number"
+                              min="0"
+                              max="100"
+                              value={percentages.img2}
+                              onChange={(e) => handlePercentageChange(e, "img2")}
+                              className="w-16 px-2 py-1 text-center border rounded"
+                            />
                           </div>
                         </div>
                       )}
@@ -454,8 +475,30 @@ function App() {
                       </div>
                       {isDualImageMode && (
                         <div className="space-y-2">
+                          <label htmlFor="percent1" className="block text-sm font-medium text-slate-700">
+                            Porcentagem Imagem 1
+                          </label>
+                          <div className="flex gap-2 items-center">
+                            <input
+                              id="percent1"
+                              type="range"
+                              min="0"
+                              max="100"
+                              value={percentages.img1}
+                              onChange={(e) => handlePercentageChange(e, "img1")}
+                              className="flex-1 h-2 rounded-lg appearance-none cursor-pointer bg-slate-200"
+                            />
+                            <input
+                              type="number"
+                              min="0"
+                              max="100"
+                              value={percentages.img1}
+                              onChange={(e) => handlePercentageChange(e, "img1")}
+                              className="w-16 px-2 py-1 text-center border rounded"
+                            />
+                          </div>
                           <label htmlFor="percent2" className="block text-sm font-medium text-slate-700">
-                            Porcentagem de Mistura
+                            Porcentagem Imagem 2
                           </label>
                           <div className="flex gap-2 items-center">
                             <input
@@ -469,11 +512,12 @@ function App() {
                             />
                             <input
                               type="number"
+                              min="0"
+                              max="100"
                               value={percentages.img2}
                               onChange={(e) => handlePercentageChange(e, "img2")}
-                              className="px-2 py-1 w-16 text-center rounded-md border"
+                              className="w-16 px-2 py-1 text-center border rounded"
                             />
-                            <span className="text-slate-600">%</span>
                           </div>
                         </div>
                       )}
