@@ -27,6 +27,7 @@ import Rotacao90Horario from "./services/filtros/rotacao90h";
 import Rotacao180 from "./services/filtros/rotacao180";
 import Sobel from "./services/filtros/sobel";
 import Soma from "./services/filtros/soma";
+import Histogram from './components/Histogram';
 
 const list = [
   "Logaritmo",
@@ -66,6 +67,9 @@ function App() {
   const [isDualImageMode, setIsDualImageMode] = useState(false);
   const [percentages, setPercentages] = useState<{ img1: number; img2: number }>({ img1: 50, img2: 50 });
   const [filterSize, setFilterSize] = useState<number>(3);
+  const [showHistogram, setShowHistogram] = useState(false);
+  const [lastFilter, setLastFilter] = useState<string>("");
+  const [resultMatrix, setResultMatrix] = useState<number[][] | null>(null);
 
   const canvasRef1 = useRef<HTMLCanvasElement>(null);
   const canvasRef2 = useRef<HTMLCanvasElement>(null);
@@ -111,6 +115,7 @@ function App() {
     }
 
     let resultMatrix: number[][] | null = null;
+    setLastFilter(filterName);
 
     switch (filterName) {
       case 'Logaritmo':
@@ -163,7 +168,11 @@ function App() {
         break;
       case 'Equalização':
         resultMatrix = Equalizacao(grayMatrix);
-        break;
+        if (resultMatrix) {
+          updateCanvas(resultMatrix);
+          setShowHistogram(true);
+        }
+        return;
       case 'Negativo':
         resultMatrix = Negativo(grayMatrix);
         break;
@@ -198,6 +207,22 @@ function App() {
     }
   };
 
+  const handleApplySoma = () => {
+    if (!grayMatrix || !secondGrayMatrix) {
+      console.error('Necessário ter duas imagens carregadas');
+      return;
+    }
+
+    const resultMatrix = Soma(
+      grayMatrix,
+      secondGrayMatrix,
+      percentages.img1 / 100,
+      percentages.img2 / 100
+    );
+
+    updateCanvas(resultMatrix);
+  };
+
   const updateCanvas = (matrix: number[][]) => {
     const canvas = canvasRef1.current;
     if (!canvas) return;
@@ -219,6 +244,7 @@ function App() {
     }
 
     context.putImageData(imageData, 0, 0);
+    setResultMatrix(matrix);
   };
 
   useEffect(() => {
@@ -386,6 +412,15 @@ function App() {
                     />
                   </div>
                 )}
+
+                {grayMatrix && (
+                  <button
+                    onClick={() => setShowHistogram(true)}
+                    className="w-full px-4 py-2 text-sm font-medium text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                  >
+                    Mostrar Histograma
+                  </button>
+                )}
               </div>
             </div>
 
@@ -451,6 +486,12 @@ function App() {
                               className="w-16 px-2 py-1 text-center border rounded"
                             />
                           </div>
+                          <button
+                            onClick={handleApplySoma}
+                            className="w-full mt-4 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                          >
+                            Aplicar Soma
+                          </button>
                         </div>
                       )}
                     </div>
@@ -565,6 +606,14 @@ function App() {
           </div>
         </div>
       </div>
+
+      {showHistogram && grayMatrix && (
+        <Histogram
+          imageData={lastFilter === 'Equalização' ? resultMatrix || grayMatrix : grayMatrix}
+          onClose={() => setShowHistogram(false)}
+          title={lastFilter === 'Equalização' ? 'Histograma da Imagem Equalizada' : 'Histograma da Imagem'}
+        />
+      )}
 
       <footer className="flex flex-col justify-center items-center w-full h-16 text-base bg-gradient-to-r from-slate-800 to-slate-900 text-slate-300">
         <div>&copy; 2024 - Processamento Digital de Imagens</div>
