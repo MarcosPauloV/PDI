@@ -7,7 +7,6 @@ import EspelhamentoHorizontal from "./services/filtros/espelhamentoH";
 import EspelhamentoVertical from "./services/filtros/espelhamentoV";
 import Expansao from "./services/filtros/expansao";
 import HighBoost from "./services/filtros/highboost";
-import Histogramagrafimg from "./services/filtros/histograma";
 import InterpolacaoRepli512 from "./services/filtros/interpolacaoreplicacao512";
 import Ampliacaointrp1024 from "./services/filtros/interpolacaoreplicacao1024";
 import Laplaciano from "./services/filtros/laplaciano";
@@ -56,6 +55,8 @@ const list = [
   "Espelhamento Horizontal",
   "Espelhamento Vertical",
   "Histograma",
+  "Ampliação Bilinear 1024",
+  "Interpolação Replicação 1024",
 ];
 
 function App() {
@@ -197,6 +198,12 @@ function App() {
       case 'Soma de duas imagens':
         setIsDualImageMode(true);
         return;
+      case 'Ampliação Bilinear 1024':
+        resultMatrix = AmpliacaoBilinear1024(grayMatrix);
+        break;
+      case 'Interpolação Replicação 1024':
+        resultMatrix = Ampliacaointrp1024(grayMatrix);
+        break;
       default:
         console.error('Filtro não implementado:', filterName);
         return;
@@ -420,7 +427,7 @@ function App() {
                 {grayMatrix && (
                   <button
                     onClick={() => setShowHistogram(true)}
-                    className="w-full px-4 py-2 text-sm font-medium text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                    className="px-4 py-2 w-full text-sm font-medium text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400"
                   >
                     Mostrar Histograma
                   </button>
@@ -465,7 +472,7 @@ function App() {
                               max="100"
                               value={percentages.img1}
                               onChange={(e) => handlePercentageChange(e, "img1")}
-                              className="w-16 px-2 py-1 text-center border rounded"
+                              className="px-2 py-1 w-16 text-center rounded border"
                             />
                           </div>
                         </div>
@@ -505,12 +512,12 @@ function App() {
                           max="100"
                           value={percentages.img2}
                           onChange={(e) => handlePercentageChange(e, "img2")}
-                          className="w-16 px-2 py-1 text-center border rounded"
+                          className="px-2 py-1 w-16 text-center rounded border"
                         />
                       </div>
                       <button
                         onClick={handleApplySoma}
-                        className="w-full mt-4 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="px-4 py-2 mt-4 w-full text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
                       >
                         Aplicar Soma
                       </button>
@@ -552,7 +559,7 @@ function App() {
                     setFilterSize(value);
                   }
                 }}
-                className="w-16 px-2 py-1 text-center border rounded"
+                className="px-2 py-1 w-16 text-center rounded border"
               />
             </div>
           </div>
